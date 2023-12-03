@@ -1,9 +1,11 @@
 # School Dashboard AebApp
 
-To run this app follow the commands:
-npm install
-npm run dev
+#### Deployed app link: https://school-dashboard-bay.vercel.app/
 
-Use this test id:
-email: example@abc.com
-password: qwerty
+#### To run this app follow the commands:<br>
+npm install<br>
+npm run dev<br>
+
+#### Use this test id:<br>
+email: example@abc.com<br>
+password: qwerty<br>
