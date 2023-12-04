@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import DropDown from "./components/DropDown";
 import SyllabusMenu from "./components/SyllabusMenu";
 import {
@@ -44,6 +51,7 @@ const Syllabus = () => {
     "History",
   ];
   const years = ["2019-20", "2020-21", "2021-22", "2022-23", "2023-24"];
+  const [success, setSuccess] = useState(false);
 
   const getBoards = async () => {
     const querySnapshot = await getDocs(collection(db, "dashboard"));
@@ -127,6 +135,8 @@ const Syllabus = () => {
         await setDoc(doc(db, "syllabus", SyllabusObj.id), {
           ...SyllabusObj,
         });
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 6000);
       } catch (error) {
         console.log(error);
       }
@@ -164,7 +174,14 @@ const Syllabus = () => {
       <Box>
         <Typography variant="h3">Syllabus</Typography>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 5,
+          position: "relative",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -218,6 +235,19 @@ const Syllabus = () => {
         >
           Submit
         </Button>
+
+        <Alert
+          severity="success"
+          sx={{
+            position: "absolute",
+            bottom: 15,
+            left: "20%",
+            display: success ? "flex" : "none",
+          }}
+          key={success}
+        >
+          Syllabus submited
+        </Alert>
       </Box>
     </Box>
   );

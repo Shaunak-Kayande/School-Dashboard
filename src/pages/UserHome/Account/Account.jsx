@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { db, storage } from "../../../firebase";
 import {
@@ -28,6 +35,7 @@ const Account = () => {
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [profileDetails, setProfileDetails] = useState({});
+  const [success, setSuccess] = useState(false);
 
   const getUserDetails = async () => {
     const accountRef = collection(db, "user");
@@ -73,7 +81,8 @@ const Account = () => {
       await setDoc(doc(db, "user", profileDetails.id), {
         ...obj,
       });
-      console.log("successfully updated profile");
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 6000);
     } catch (error) {
       console.log(error);
     }
@@ -81,12 +90,12 @@ const Account = () => {
 
   const [valid, isValid] = useState(true);
   const formValidation = () => {
-    const format = /^[a-zA-Z0-9.-_]+$/;
-    if (userName.charAt(0).toUpperCase() != userName.charAt(0).toLowerCase)
-      isValid(false);
-    else if (userName.length < 4 || userName.length > 30) isValid(false);
-    else if (!format.test(userName)) isValid(false);
-    else isValid(true);
+    // const format = /^[a-zA-Z0-9.-_]+$/;
+    // if (userName.charAt(0).toUpperCase() != userName.charAt(0).toLowerCase)
+    //   isValid(false);
+    // else if (userName.length < 4 || userName.length > 30) isValid(false);
+    // else if (!format.test(userName)) isValid(false);
+    // else isValid(true);
   };
 
   return (
@@ -100,6 +109,7 @@ const Account = () => {
           xs: 2,
           md: 7,
         },
+        position: "relative",
       }}
     >
       <Box>
@@ -183,6 +193,18 @@ const Account = () => {
       <Button variant="contained" sx={{ width: 0.1 }} onClick={editUserDetails}>
         Submit
       </Button>
+      <Alert
+        severity="success"
+        sx={{
+          position: "absolute",
+          top: 25,
+          left: "30%",
+          display: success ? "flex" : "none",
+        }}
+        key={success}
+      >
+        Profile updated
+      </Alert>
     </Box>
   );
 };

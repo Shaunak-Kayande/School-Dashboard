@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Button, Container, Input, Paper, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Container,
+  Input,
+  Paper,
+  Typography,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
@@ -10,6 +17,7 @@ const LogIn = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { signIn } = UserAuth();
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +28,8 @@ const LogIn = () => {
     } catch (e) {
       setError(e.message);
       console.log(e.message);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 6000);
     }
   };
   return (
@@ -56,6 +66,15 @@ const LogIn = () => {
         <Button onClick={handleSubmit} variant="contained" sx={{ width: 0.7 }}>
           Log In
         </Button>
+        <Alert
+          severity="error"
+          sx={{
+            display: success ? "flex" : "none",
+          }}
+          key={success}
+        >
+          Username and password do not match
+        </Alert>
       </Paper>
     </div>
   );

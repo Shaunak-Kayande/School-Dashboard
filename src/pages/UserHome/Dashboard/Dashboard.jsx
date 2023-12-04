@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -32,6 +39,7 @@ const Dashboard = () => {
   const [editedBoard, setEditedBoard] = useState("");
   const [editedMedium, setEditedMedium] = useState("");
   const [editedClass, setEditedClass] = useState("");
+  const [success, setSuccess] = useState(false);
 
   // To Fetch Dashboard Data
   const getDashboardData = async () => {
@@ -53,6 +61,7 @@ const Dashboard = () => {
   }
 
   const handleAdd = async () => {
+    if (!(newSchool && newBoard && newMedium && newClass)) return;
     const newRow = createData(newSchool, newBoard, newMedium, newClass);
     //dashboardData.push(newRow);
     // console.log(newRow);
@@ -60,6 +69,8 @@ const Dashboard = () => {
       await addDoc(collection(db, "dashboard"), {
         ...newRow,
       });
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 6000);
     } catch (error) {
       console.log(error);
     }
@@ -73,6 +84,8 @@ const Dashboard = () => {
     for (let i = 0; i < deleteList.length; i++) {
       deleteDoc(doc(db, "dashboard", deleteList[i]));
     }
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), 6000);
     getDashboardData();
   };
 
@@ -94,6 +107,8 @@ const Dashboard = () => {
       await setDoc(doc(db, "dashboard", dashboardData[index].id), {
         ...editedRow,
       });
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 6000);
     } catch (error) {
       console.log(error);
     }
@@ -246,6 +261,18 @@ const Dashboard = () => {
           </TableBody>
         </Table>
       </Paper>
+      <Alert
+        severity="success"
+        sx={{
+          position: "absolute",
+          top: 15,
+          left: "20%",
+          display: success ? "flex" : "none",
+        }}
+        key={success}
+      >
+        Done
+      </Alert>
     </Box>
   );
 };

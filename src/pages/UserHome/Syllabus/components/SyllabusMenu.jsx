@@ -109,6 +109,7 @@ const SyllabusMenu = ({ SyllabusObj }) => {
                   <TextField
                     size="small"
                     defaultValue={item.name}
+                    label="Topic"
                     sx={{
                       width: {
                         xs: 1,
